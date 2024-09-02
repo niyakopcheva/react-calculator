@@ -6,6 +6,30 @@ export default function Calculator() {
     const [currentOperand, setCurrentOperand] = useState("");
     const [previousOperand, setPreviousOperand] = useState("");
     const [operation, setOperation] = useState(null);
+
+    const appendNumber = (number) => { 
+        setCurrentOperand(currentOperand + number);
+    }
+
+    function chooseOperation(op) {
+        switch (operation) {
+            case "divide":
+                
+                break;
+            case "multiply":
+            
+            break;
+            case "add":
+            
+            break;
+            case "subtract":
+            
+            break;
+        
+            default:
+                break;
+        }
+    }
     
     return (
         <>
@@ -16,21 +40,20 @@ export default function Calculator() {
                 </div>
                 <button className="span-two">AC</button>
                 <button>DEL</button>
-                <button>÷</button>
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>*</button>
-                <button>4</button>
-                <button>5</button>
-                <button>6</button>
-                <button>+</button>
-                <button>7</button>
-                <button>8</button>
-                <button>9</button>
-                <button>-</button>
-                <button>.</button>
-                <button>0</button>
+                <button onClick={chooseOperation("divide")}>÷</button>
+                <button onClick={appendNumber("1")}>1</button>
+                <button onClick={appendNumber("2")}>2</button>
+                <button onClick={appendNumber("3")}>3</button>
+                <button onClick={chooseOperation("multiply")}>*</button>
+                <button onClick={appendNumber("4")}>4</button>
+                <button onClick={appendNumber("5")}>5</button>
+                <button onClick={appendNumber("6")}>6</button>
+                <button onClick={chooseOperation("add")}>+</button>
+                <button onClick={appendNumber("7")}>7</button>
+                <button onClick={appendNumber("8")}>8</button>
+                <button onClick={appendNumber("9")}>9</button>
+                <button onClick={chooseOperation("subtract")}>-</button>
+                <button onClick={appendNumber("0")}>0</button>
                 <button className="span-two">=</button>
             </div>
     </>
