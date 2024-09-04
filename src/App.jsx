@@ -3,11 +3,14 @@ import "../src/style.css"
 import { useState } from "react";
 
 function App() {
-  const [currentOperand, setCurrentOperand] = useState("");
+  const [currentOperand, setCurrentOperand] = useState("0");
     const [previousOperand, setPreviousOperand] = useState("");
     const [operation, setOperation] = useState(null);
 
     const appendNumber = (number) => { 
+        if(currentOperand === "0") {
+          setCurrentOperand(number);
+        } else
         setCurrentOperand(currentOperand + number);
     } 
 
@@ -29,7 +32,7 @@ function App() {
         default:
           break;
       }
-      if(currentOperand === "") return;
+      if(currentOperand === "0") return;
       if(previousOperand !== "") {
 
       }
@@ -40,7 +43,7 @@ function App() {
 
     const calculate = () => {
       let sum = 0;
-      if(previousOperand !== "" && currentOperand !== "" && operation !== null) {
+      if(previousOperand !== "" && currentOperand !== "0" && operation !== null) {
         let num1 = Number(previousOperand);
         console.log(typeof(num1));
         let num2 = Number(currentOperand);
@@ -69,13 +72,16 @@ function App() {
     }
     
     const clearOutput = () => {
-      setCurrentOperand("");
+      setCurrentOperand("0");
       setPreviousOperand("");
       setOperation(null);
     }
 
     const deleteLastDigit = () => {
       setCurrentOperand(currentOperand.substring(0, currentOperand.length - 1));
+      if(currentOperand === "") {
+        setCurrentOperand("0");
+      }
     }
     
     return (
