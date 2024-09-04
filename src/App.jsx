@@ -1,6 +1,6 @@
 import "../src/reset.css"
 import "../src/style.css"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [currentOperand, setCurrentOperand] = useState("0");
@@ -14,30 +14,48 @@ function App() {
         setCurrentOperand(currentOperand + number);
     } 
 
-    const chooseOperation = (operation) => {
-      let opSymbol = "";
-      switch (operation) {
-        case "divide":
-          opSymbol = "÷";
-          break;
-        case "multiply":
-          opSymbol = "*";
-          break;
-        case "add":
-          opSymbol = "+";
-          break;
-        case "subtract":
-          opSymbol = "-";
-          break;
-        default:
-          break;
-      }
-      if(currentOperand === "0") return;
-      if(previousOperand !== "") {
+    const handleKeyDown = (e) => {
+      const { key } = e;
 
+      if((key >= "0" && key <= "9") || key === ".") {
+        appendNumber(key);
       }
-      setOperation(opSymbol);
+
+      if(key === "+" || key === "-" || key === "*") {
+        chooseOperation(key);
+      }
+
+      if(key === "/") {
+        chooseOperation("÷");
+      }
+
+      if(key === "Enter") {
+        calculate();
+      }
+
+      if(key === "Backspace") {
+        deleteLastDigit();
+      }
+
+      if(key === "Escape") {
+        clearOutput();
+      }
+    };
+
+    useEffect(() => {
+      window.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }, [currentOperand, previousOperand, operation]
+    );
+
+    const chooseOperation = (operation) => {
+      if(currentOperand === "0") return;
+      
       setPreviousOperand(currentOperand);
+      setOperation(operation);
       setCurrentOperand("");
     }
 
@@ -92,20 +110,20 @@ function App() {
                     <div className="current-operand">{currentOperand}</div>
                 </div>
                 <button className="span-two" onClick={() => clearOutput()}>AC</button>
-                <button onClick={() => deleteLastDigit()}>DEL</button>
-                <button onClick={() => chooseOperation("divide")}>÷</button>
+                <button onClick={() => deleteLastDigit()} >DEL</button>
+                <button onClick={() => chooseOperation("÷")}>÷</button>
                 <button onClick={() => appendNumber("1")}>1</button>
                 <button onClick={() => appendNumber("2")}>2</button>
                 <button onClick={() => appendNumber("3")}>3</button>
-                <button onClick={() => chooseOperation("multiply")}>x</button>
+                <button onClick={() => chooseOperation("*")}>*</button>
                 <button onClick={() => appendNumber("4")}>4</button>
                 <button onClick={() => appendNumber("5")}>5</button>
                 <button onClick={() => appendNumber("6")}>6</button>
-                <button onClick={() => chooseOperation("add")}>+</button>
+                <button onClick={() => chooseOperation("+")}>+</button>
                 <button onClick={() => appendNumber("7")}>7</button>
                 <button onClick={() => appendNumber("8")}>8</button>
                 <button onClick={() => appendNumber("9")}>9</button>
-                <button onClick={() => chooseOperation("subtract")}>-</button>
+                <button onClick={() => chooseOperation("-")}>-</button>
                 <button onClick={() => appendNumber(".")}>.</button>
                 <button onClick={() => appendNumber("0")}>0</button>
                 <button className="span-two" onClick={() => calculate()}>=</button>
